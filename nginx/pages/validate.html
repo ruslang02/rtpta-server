@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Email validation</title>
+    </head>
+    <body>
+        <div id="result">
+            Validating...
+        </div>
+
+        <script>
+            const token = new URLSearchParams(location.search).get("token");
+            fetch("api/v1/auth/validate", { url: "api/v1/auth/validate", method: "POST", body: JSON.stringify({ token }),
+    headers: {
+      'Content-Type': 'application/json'
+            }})
+                .then((e) => document.querySelector("#result").innerText= [200, 201].includes(e.status) ? "Validated!" : "Validation failed.")
+                .catch(() => document.querySelector("#result").innerText="Validation failed.")
+        </script>
+    </body>
+</html>

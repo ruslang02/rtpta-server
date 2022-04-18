@@ -1,0 +1,23 @@
+version: "3.3"
+
+networks:
+  backend:
+    external: true
+
+services:
+  auth-service:
+    container_name: auth-service
+    ports:
+      - "5000:5000"
+    networks:
+      - backend
+    build: .
+    restart: always
+    env_file: development.env
+  db:
+    image: postgres
+    restart: always
+    networks:
+      - backend
+    environment:
+      - POSTGRES_PASSWORD=postgres

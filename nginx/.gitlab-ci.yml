@@ -1,0 +1,12 @@
+deploy:
+  stage: deploy
+  only:
+    refs:
+      - master
+  tags:
+    - deploy-prod
+  script:
+    - docker image prune -f
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker-compose down
+    - docker-compose up -d

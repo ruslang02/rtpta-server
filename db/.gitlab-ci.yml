@@ -1,0 +1,14 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+deploy:
+  stage: deploy
+  only:
+    refs:
+      - master
+  tags:
+    - deploy-prod
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t db-service .
+    - docker run --network backend --env-file=/srv/production.env -t db-service

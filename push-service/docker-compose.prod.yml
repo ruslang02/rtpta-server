@@ -1,0 +1,14 @@
+version: "3.3"
+
+networks:
+  backend:
+    external: true
+
+services:
+  push-service:
+    container_name: push-service
+    networks:
+      - backend
+    build: .
+    restart: always
+    env_file: /srv/production.env

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package push;
+
+import "auth.proto";
+
+service Push {
+    rpc RegisterDevice (DeviceOptions) returns (Empty);
+    rpc SendNotification (NotificationOptions) returns (Empty);
+}
+
+message DeviceOptions {
+    auth.AuthInformation auth = 1;
+    string token = 2;
+}
+
+message NotificationOptions {
+    string recipient = 1;
+    string title = 2;
+    string body = 3;
+}
+
+message Empty {}

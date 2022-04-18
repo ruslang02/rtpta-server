@@ -1,0 +1,87 @@
+version: "3.3"
+
+networks:
+  backend:
+
+services:
+  admin-gateway:
+    container_name: admin-gateway
+    networks:
+      - backend
+    build: admin-gateway
+    restart: always
+    env_file: ./development.env
+    depends_on:
+      - db-service
+  auth-service:
+    container_name: auth-service
+    networks:
+      - backend
+    build: auth-service
+    restart: always
+    env_file: ./development.env
+    depends_on:
+      - db-service
+  mail-service:
+    container_name: mail-service
+    networks:
+      - backend
+    build: mail-service
+    restart: always
+    env_file: ./development.env
+    depends_on:
+      - db-service
+  support-service:
+    container_name: support-service
+    networks:
+      - backend
+    build: support-service
+    restart: always
+    env_file: ./development.env
+    depends_on:
+      - db-service
+  file-service:
+    container_name: file-service
+    networks:
+      - backend
+    build: file-service
+    restart: always
+    env_file: ./development.env
+    depends_on:
+      - db-service
+      - minio
+  minio:
+    container_name: minio
+    image: minio/minio
+    networks:
+      - backend
+    restart: always
+    env_file: ./development.env
+    command: "server /data"
+  db:
+    image: postgres
+    networks:
+      - backend
+    build: db
+    restart: always
+    env_file: ./development.env
+  db-service:
+    container_name: db-service
+    networks:
+      - backend
+    build: db
+    env_file: ./development.env
+    depends_on:
+      - db
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - 80:80
+    networks:
+      - backend
+    restart: always
+    env_file: ./development.env
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/pages:/var/www/nginx

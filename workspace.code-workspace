@@ -1,0 +1,56 @@
+{
+	"folders": [
+        {
+            "path": "admin-gateway"
+        },
+        {
+            "path": "auth-service"
+        },
+        {
+            "path": "user-gateway"
+        },
+        {
+            "path": "nginx"
+        },
+        {
+            "path": "proto-schemas"
+        },
+        {
+            "path": "mail-service"
+        },
+        {
+            "path": "support-service"
+        },
+        {
+            "path": "file-service"
+        },
+        {
+            "path": "db"
+        },
+        {
+            "path": "db-models"
+        },
+        {
+            "path": "public-transport-agg"
+        },
+        {
+            "path": "push-service"
+        }
+    ],
+  "settings": {
+    "git.ignoreLimitWarning": true,
+    "editor.detectIndentation": false,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "db.infostrategic.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "transport",
+            "database": "transport",
+            "username": "transport",
+            "password": "rbe4HT2tvPfA"
+        }
+    ]
+  }
+}

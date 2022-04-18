@@ -1,0 +1,161 @@
+syntax = "proto3";
+
+package auth;
+
+service Auth {
+    rpc AuthorizeViaApiKey (KeyCredentials) returns (AuthorizationResult);
+    rpc AuthorizeViaPassword (PasswordCredentials) returns (AuthorizationResult);
+    rpc InvalidateToken (Token) returns (InvalidateTokenResult);
+    rpc RefreshToken (Token) returns (RefreshTokenResult);
+
+    rpc CheckToken (TokenShort) returns (CheckTokenResult);
+
+    rpc CreateUser (CreateUserRequest) returns (OneUserResponse);
+    rpc GetUsers (GetUsersRequest) returns (ManyUsersResponse);
+    rpc GetUser (GetUserRequest) returns (OneUserResponse);
+    rpc PatchUser (PatchUserRequest) returns (OneUserResponse);
+
+    rpc Register (RegistrationDetails) returns (RegistrationResult);
+    rpc Validate (ValidationDetails) returns (RegistrationResult);
+
+    rpc SendResetPasswordEmail (ResetPasswordRequest) returns (ResetPasswordRequestResult);
+    rpc ResetPassword (ResetPasswordDetails) returns (ResetPasswordResult);
+}
+
+message CreateUserRequest {
+    AuthInformation auth = 1;
+    string email = 2;
+    string password = 3;
+    string type = 4;
+    string companyId = 5;
+}
+
+message GetUsersRequest {
+    AuthInformation auth = 1;
+    string query = 2;
+}
+
+message GetUserRequest {
+    AuthInformation auth = 1;
+    string uid = 2;
+    string email = 3;
+}
+
+message PatchUserRequest {
+    AuthInformation auth = 1;
+    string email = 2;
+    string password = 3;
+    string type = 4;
+    string companyId = 5;
+    bool active = 6;
+}
+
+message OneUserResponse {
+    string message = 1;
+    User user = 2;
+}
+
+message ManyUsersResponse {
+    string message = 1;
+    repeated User users = 2;
+}
+
+message User {
+    string uid = 1;
+    string email = 2;
+    string type = 3;
+    string companyId = 4;
+    bool active = 5;
+    bool validated = 6;
+}
+
+message AuthInformation {
+    string uid = 1;
+    string email = 2;
+    string type = 3;
+    string companyId = 4;
+}
+
+message ResetPasswordDetails {
+    string email = 1;
+    string token = 2;
+    string password = 3;
+}
+
+message ValidationDetails {
+    string token = 1;
+}
+
+message RegistrationDetails {
+    string email = 1;
+    string password = 2;
+}
+
+enum ResultCode {
+    SUCCESS = 0;
+    WEAK_PASSWORD = 1;
+    EMAIL_INVALID = 2;
+    TOKEN_INVALID = 3;
+    CREDENTIALS_INVALID = 4;
+    UNKNOWN_ERROR = 100;
+}
+
+message RegistrationResult {
+    ResultCode code = 1;
+    string message = 2;
+}
+
+message ResetPasswordResult {
+    ResultCode code = 1;
+    string message = 2;
+}
+
+message InvalidateTokenResult {
+    ResultCode code = 1;
+    string message = 2;
+}
+
+message RefreshTokenResult {
+    ResultCode code = 1;
+    string message = 2;
+    Token token = 3;
+}
+
+message ResetPasswordRequest {
+    string email = 1;
+}
+
+message ResetPasswordRequestResult {
+    ResultCode code = 1;
+    string message = 2;
+}
+
+message CheckTokenResult {
+    bool isValid = 1;
+    AuthInformation auth = 2;
+}
+
+message KeyCredentials {
+    string apiKey = 1;
+}
+
+message PasswordCredentials {
+    string email = 1;
+    string password = 2;
+}
+
+message Token {
+    string access_token = 1;
+    string refresh_token = 2;
+    int32 expires_at = 3;
+}
+
+message TokenShort {
+    string access_token = 1;
+}
+
+message AuthorizationResult {
+    ResultCode code = 1;
+    string message = 2;
+    Token token = 3;
+}

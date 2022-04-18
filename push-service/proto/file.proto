@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package file;
+
+import "auth.proto";
+
+service File {
+    rpc GenerateUploadUrl(GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
+    rpc GenerateDownloadUrl(GenerateDownloadUrlRequest) returns (GenerateDownloadUrlResponse);
+}
+
+message FileAcl {
+    repeated string creator = 1;
+    repeated string watchers = 2;
+}
+
+message GenerateUploadUrlRequest {
+    auth.AuthInformation auth = 1;
+    FileAcl acl = 2;
+    string name = 3;
+}
+
+message GenerateUploadUrlResponse {
+    string id = 1;
+    string url = 2;
+    int32 expires_in = 3;
+    string message = 4;
+}
+
+message GenerateDownloadUrlRequest {
+    auth.AuthInformation auth = 1;
+    string id = 2;
+}
+
+message GenerateDownloadUrlResponse {
+    string url = 1;
+    string message = 2;
+}

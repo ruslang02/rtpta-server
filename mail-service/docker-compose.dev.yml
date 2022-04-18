@@ -1,0 +1,16 @@
+version: "3.3"
+
+networks:
+  backend:
+    external: true
+
+services:
+  mail-service:
+    container_name: mail-service
+    ports:
+      - "5000:5000"
+    networks:
+      - backend
+    build: .
+    restart: always
+    env_file: development.env

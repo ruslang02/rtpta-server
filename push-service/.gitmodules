@@ -1,0 +1,6 @@
+[submodule "src/models"]
+	path = src/models
+	url = ../db-models
+[submodule "proto"]
+	path = proto
+	url = ../proto-schemas

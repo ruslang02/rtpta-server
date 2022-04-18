@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+import "auth.proto";
+
+package support;
+
+service Support {
+    rpc NewCompanyRequest(NewCompanyRequestOptions) returns (Result);
+    rpc SendReport(ReportDetails) returns (Result);
+    rpc SendBugReport(BugReportDetails) returns (Result);
+    rpc CreateChat(CreateChatDetails) returns (Result);
+    rpc GetChatMessage(GetChatMessageDetails) returns (OneChatMessageResult);
+    rpc GetChatMessages(GetChatMessagesDetails) returns (ManyChatMessagesResult);
+    rpc CreateChatMessage(CreateChatMessageDetails) returns (OneChatMessageResult);
+    rpc GetReports(GetReportsOptions) returns (ManyReportsResult);
+}
+
+message NewCompanyRequestOptions {
+    string managerFirstName = 1;
+    string managerLastName = 2;
+    string managerEmail = 3;
+    string companyName = 4;
+    repeated string documents = 5;
+}
+
+message ReportDetails {
+    auth.AuthInformation auth = 1;
+    string description = 2;
+    string tripId = 3;
+    repeated string files = 4;
+}
+
+message BugReportDetails {
+    auth.AuthInformation auth = 1;
+    string description = 2;
+    repeated string files = 3;
+}
+
+message CreateChatDetails {
+    auth.AuthInformation auth = 1;
+    string topic = 2;
+}
+
+message CreateChatMessageDetails {
+    auth.AuthInformation auth = 1;
+    string chatId = 2;
+    string content = 3;
+    repeated string files = 4;
+}
+
+message GetChatMessageDetails {
+    auth.AuthInformation auth = 1;
+    string chatId = 2;
+    string messageId = 3;
+}
+
+message GetChatMessagesDetails {
+    auth.AuthInformation auth = 1;
+    string chatId = 2;
+    string lastMessageId = 3;
+}
+
+message GetReportsOptions {
+    auth.AuthInformation auth = 1;
+    bool archived = 2;
+}
+
+message Result {
+    string message = 1;
+}
+
+message ChatMessage {
+    string id = 1;
+    string authorId = 2;
+    string content = 3;
+    repeated string files = 4;
+}
+
+message OneChatMessageResult {
+    string message = 1;
+    ChatMessage messageItem = 2;
+}
+
+message ManyChatMessagesResult {
+    string message = 1;
+    repeated ChatMessage messageItems = 2;
+}
+
+message Chat {
+    string id = 1;
+    repeated string participants = 2;
+}
+
+message Report {
+    string id = 1;
+    string description = 2;
+    repeated string files = 3;
+}
+
+message OneReportResult {
+    oneof OneReportResultOneOf {
+        Chat chat = 1;
+        Report report = 2;
+    }
+}
+
+message ManyReportsResult {
+    string message = 1;
+    repeated OneReportResult results = 2;
+}
